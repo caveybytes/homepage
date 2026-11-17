@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Twenty48 challenge</title>
+  <style>
+    body {
+      max-width: 38rem;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      font: 1.1rem/1.5 system-ui, sans-serif;
+      color: #e8edf5;
+      background: #182331;
+    }
+    a, button {
+      display: inline-block;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      padding: 0.75rem 1rem;
+      border: 0;
+      border-radius: 0.5rem;
+      font: inherit;
+      cursor: pointer;
+    }
+    a {
+      color: #182331;
+      background: #b4e2c6;
+      text-decoration: none;
+    }
+    button {
+      color: #182331;
+      background: #d5dcec;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.75rem;
+      font: inherit;
+    }
+  </style>
+</head>
+<body>
+  <main id="challenge" hidden>
+    <h1>You’ve been invited to a Twenty48 challenge</h1>
+    <p>Install Twenty48 to play, then reopen this link or paste it into the app.</p>
+
+    <a href="https://play.google.com/store/apps/details?id=com.caveybytes.twenty48">
+      Get it on Google Play
+    </a>
+
+    <p><label for="link">Challenge link</label></p>
+    <input id="link" type="text" readonly>
+    <button id="copy" type="button">Copy link</button>
+    <p id="status" role="status"></p>
+  </main>
+
+  <main id="not-found">
+    <h1>Page not found</h1>
+    <p>Sorry, we couldn’t find that page.</p>
+    <a href="/">Go to the home page</a>
+  </main>
+
+  <script>
+    const prefix = "/twenty48/challenge/";
+    const code = window.location.pathname.slice(prefix.length);
+
+    if (window.location.pathname.startsWith(prefix) && code && !code.includes("/")) {
+      document.getElementById("not-found").hidden = true;
+      document.getElementById("challenge").hidden = false;
+
+      const link = document.getElementById("link");
+      const status = document.getElementById("status");
+      link.value = window.location.href;
+
+      document.getElementById("copy").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(link.value);
+          status.textContent = "Link copied.";
+        } catch {
+          link.select();
+          status.textContent = "Select and copy the link above.";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
